@@ -2,9 +2,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.vecmath.Vector3d;
 
-/**
- * Created by mrabens on 2/28/2016.
- */
 public class Path {
     protected List<Vector3d> nodes;
 
