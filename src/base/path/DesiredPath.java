@@ -38,39 +38,61 @@ public class DesiredPath extends Path {
 
     private boolean slicePathSegment (Vector3f n0, Vector3f n1, int sliceIndex) {
         // the top and bottom depth of the slice we're looking at
-        float sliceTop;
-        float sliceBottom;
+        float sliceTop = sliceIndex * -Config.PassDepth;
+        float sliceBottom = (sliceIndex + 1) * -Config.PassDepth;
 
-        sliceTop = sliceIndex * Config.PassDepth;
-        if (n0.z > sliceTop) {
-            // it's above this slice
+        boolean n0AboveTop = (n0.z > sliceTop);
+        boolean n0BelowBottom = (n0.z <= sliceBottom);
+        boolean n1AboveTop = (n1 != null) && (n1.z > sliceTop);
+        boolean n1BelowBottom = (n1 != null) && (n1.z <= sliceBottom);
+
+        if (n0AboveTop && (n1 == null || n1AboveTop)) {
+            // this entire segment is above this slice
             return false;
         }
-        sliceBottom = (sliceIndex + 1) * Config.PassDepth;
 
-        boolean n0BelowBottom = (n0.z <= sliceBottom);
+        Slice slice = getSlice(sliceIndex);
 
-        // add this node
-        Vector3f newPathNode = new Vector3f(n0);
-        if (n0BelowBottom) {
-            // clamp node to bottom of slice
-            newPathNode.z = sliceBottom;
+        Vector3f newPathNode;
+
+        if (n0AboveTop) {
+            // path segment crosses top. add new node where it crosses
+            newPathNode = new Vector3f();
+            newPathNode.interpolate(n0, n1, (sliceTop - n0.z) / (n1.z - n0.z));
+            slice.getOpenPath().addNode(newPathNode);
         }
-        getSlice(sliceIndex).getOpenPath().addNode(newPathNode);
+        else {
+            // add this node
+            newPathNode = new Vector3f(n0);
+            if (n0BelowBottom) {
+                // clamp node to bottom of slice
+                newPathNode.z = sliceBottom;
+            }
+            slice.getOpenPath().addNode(newPathNode);
+        }
 
         if (n1 == null) {
             // n0 is last node, so close path if it's open
-            getSlice(sliceIndex).closeOpenPath();
+            slice.closeOpenPath();
         }
         else {
-            boolean n1AboveTop = (n1.z > sliceTop);
-            boolean n1BelowBottom = (n1.z <= sliceBottom);
+            // handle segment crossing top or bottom
 
-            if (n0BelowBottom && !n1BelowBottom) {
+            if (n0BelowBottom != n1BelowBottom) {
                 // path segment crosses slice bottom. add new node where it crosses
                 newPathNode = new Vector3f();
                 newPathNode.interpolate(n0, n1, (sliceBottom - n0.z) / (n1.z - n0.z));
-                getSlice(sliceIndex).getOpenPath().addNode(newPathNode);
+                slice.getOpenPath().addNode(newPathNode);
+            }
+
+            if (n1AboveTop) {
+                // path segment crosses slice top
+                // add new node where it crosses
+                newPathNode = new Vector3f();
+                newPathNode.interpolate(n0, n1, (sliceTop - n0.z) / (n1.z - n0.z));
+                slice.getOpenPath().addNode(newPathNode);
+                // we've crossed out of this slice, so close path
+                slice.closeOpenPath();
             }
         }
 

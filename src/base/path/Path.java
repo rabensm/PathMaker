@@ -19,4 +19,8 @@ public class Path {
         nodes.add(node);
     }
 
+    public int size() {
+        return nodes.size();
+    }
+
 }

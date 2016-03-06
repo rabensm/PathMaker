@@ -15,13 +15,15 @@ public class Slice {
     public Path getOpenPath() {
         if (openPath == null) {
             openPath = new Path();
-            paths.add(openPath);
         }
 
         return openPath;
     }
 
     public void closeOpenPath() {
+        if (openPath != null && openPath.size() > 1) {
+            paths.add(openPath);
+        }
         openPath = null;
     }
 }
