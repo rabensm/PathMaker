@@ -1,3 +1,7 @@
+package base;
+
+import base.path.DesiredPath;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -25,6 +29,6 @@ public class Main {
         path1.addNode(181, 200, 7);
         path1.addNode(200, 200, 7);
 
-        path1.createPassPaths();
+        path1.slicePath();
     }
 }
