@@ -1,6 +1,6 @@
 package base;
 
 public class Config {
-    static final public float PassDepth = 0.6f;
-    static final public float FeedRate = 250;
+    static final public double PassDepth = 0.6f;
+    static final public double FeedRate = 250;
 }
