@@ -1,7 +1,5 @@
 package base.path;
 
-import base.Config;
-
 import javax.vecmath.Vector3d;
 import java.util.ArrayList;
 import java.util.List;
