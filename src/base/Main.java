@@ -7,6 +7,7 @@ public class Main {
     public static void main(String[] args) {
         DesiredPath path1 = new DesiredPath();
 
+        // hacked together test path
         path1.addNode(10, 10, 0);
         path1.addNode(10, 20, -1);
         path1.addNode(11, 30, -2);

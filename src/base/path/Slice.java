@@ -6,15 +6,28 @@ import javax.vecmath.Vector3d;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a depth slice. Each slice contains paths that are cut at this slice's depth.
+ */
 public class Slice {
+    // whether or not a segment is in this slice
+    // a segment is still "in" this slice if it's completely below this slice, because this slice must still cut the
+    //  segment in its pass before the same segment is cut in lower passes
     public enum SegmentInSlice {
         IN_SLICE,
         NOT_IN_SLICE
     }
 
+    // z depth of top of slice
     double top;
+
+    // z depth of bottom of slice
     double bottom;
+
+    // the cutting paths for this slice
     private List<Path> paths;
+
+    // the current path being added to when slicing
     private Path openPath;
 
     public Slice (int depthIndex) {
@@ -24,6 +37,13 @@ public class Slice {
         openPath = null;
     }
 
+    /**
+     * Takes a path segment expressed as two nodes, and creates or continues a path for it in this slice
+     *
+     * @param n0
+     * @param n1
+     * @return whether or not the segment was in this slice
+     */
     public SegmentInSlice slicePathSegment (Vector3d n0, Vector3d n1) {
         if (n0.z > top) {
             // n0 is above this slice, so we don't need to add node for it
@@ -57,6 +77,14 @@ public class Slice {
         return SegmentInSlice.IN_SLICE;
     }
 
+    /**
+     * Takes a path segment, and tests whether it intersects a z-plane. If it does, it adds a node at the intersection
+     *   to the open path.
+     *
+     * @param n0
+     * @param n1
+     * @param zIntersect
+     */
     private void addNodeAtZIntersect (Vector3d n0, Vector3d n1, double zIntersect) {
         double segmentZSpan = n1.z - n0.z;
         if (segmentZSpan == 0) {
@@ -74,6 +102,11 @@ public class Slice {
         }
     }
 
+    /**
+     * Gets the current open path. Creates a new one if there isn't one.
+     *
+     * @return
+     */
     public Path getOpenPath() {
         if (openPath == null) {
             openPath = new Path();
@@ -82,6 +115,9 @@ public class Slice {
         return openPath;
     }
 
+    /**
+     * Closes the current open path, and adds it to this slice's paths.
+     */
     public void closeOpenPath() {
         if (openPath != null && openPath.size() > 1) {
             paths.add(openPath);

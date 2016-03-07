@@ -4,14 +4,21 @@ import javax.vecmath.Vector3d;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The desired path we want cut
+ */
 public class DesiredPath extends Path {
 
+    // depth slices (one for each pass, to cut path in multiple passes)
     private List<Slice> slices;
 
     public DesiredPath () {
         slices = new ArrayList<>();
     }
 
+    /**
+     * Creates a list of depth slices from this path, where each slice is a lower depth than the previous.
+     */
     public void slicePath() {
         // we need 2 nodes to have any path segments
         if (nodes.size() < 2) {
@@ -35,6 +42,12 @@ public class DesiredPath extends Path {
         }
     }
 
+    /**
+     * Gets a slice by index. Automatically creates slices down to the required index.
+     *
+     * @param index
+     * @return
+     */
     private Slice getSlice(int index) {
         while (slices.size() <= index) {
             int newSliceIndex = slices.size();
