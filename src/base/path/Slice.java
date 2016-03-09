@@ -72,6 +72,11 @@ public class Slice {
             double intersects[] = (n0.z < n1.z) ? new double[]{bottom, top} : new double[]{top, bottom};
             addNodeAtZIntersect(n0, n1, intersects[0]);
             addNodeAtZIntersect(n0, n1, intersects[1]);
+
+            if (n1.z > top) {
+                // n0 is in this slice, but next node (n1) is not, so close path
+                closeOpenPath();
+            }
         }
 
         return SegmentInSlice.IN_SLICE;
