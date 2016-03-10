@@ -25,9 +25,9 @@ public class Path {
     /**
      * Add one node to end of path
      *
-     * @param x
-     * @param y
-     * @param z
+     * @param x x coordinate of new node
+     * @param y y coordinate of new node
+     * @param z z coordinate of new node
      */
     public void addNode (double x, double y, double z) {
         nodes.add (new Vector3d (x, y, z));
@@ -36,7 +36,7 @@ public class Path {
     /**
      * Add one node to end of path
      *
-     * @param node
+     * @param node  new node to add
      */
     public void addNode (Vector3d node) {
         nodes.add(node);
@@ -45,7 +45,7 @@ public class Path {
     /**
      * Number of nodes in path
      *
-     * @return
+     * @return  number of nodes in path
      */
     public int size() {
         return nodes.size();
@@ -54,7 +54,7 @@ public class Path {
     /**
      * Put this path in forward or reverse order
      *
-     * @param isReverse
+     * @param isReverse true if reverse, false if forward
      */
     public void setReverseOrder (boolean isReverse) {
         if (reverseOrder != isReverse) {
@@ -66,7 +66,7 @@ public class Path {
     /**
      * Generates the g-code to cut this path
      *
-     * @return
+     * @return  String containing g-code for this path
      */
     public String getGCode () {
         if (nodes.size() < 2) {

@@ -52,8 +52,8 @@ public class DesiredPath extends Path {
     /**
      * Gets a slice by index. Automatically creates slices down to the required index.
      *
-     * @param index
-     * @return
+     * @param index index of slice to get
+     * @return      the requested slice
      */
     private Slice getSlice(int index) {
         while (slices.size() <= index) {

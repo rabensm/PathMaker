@@ -45,9 +45,9 @@ public class Slice {
     /**
      * Takes a path segment expressed as two nodes, and creates or continues a path for it in this slice
      *
-     * @param n0
-     * @param n1
-     * @return whether or not the segment was in this slice
+     * @param n0    segment start node
+     * @param n1    segment end node
+     * @return      whether or not the segment was in this slice
      */
     public SegmentInSlice slicePathSegment (Vector3d n0, Vector3d n1) {
         if (n0.z > top) {
@@ -91,9 +91,9 @@ public class Slice {
      * Takes a path segment, and tests whether it intersects a z-plane. If it does, it adds a node at the intersection
      *   to the open path.
      *
-     * @param n0
-     * @param n1
-     * @param zIntersect
+     * @param n0            segment start node
+     * @param n1            segment end node
+     * @param zIntersect    z intersect plane
      */
     private void addNodeAtZIntersect (Vector3d n0, Vector3d n1, double zIntersect) {
         double segmentZSpan = n1.z - n0.z;
@@ -115,7 +115,7 @@ public class Slice {
     /**
      * Gets the current open path. Creates a new one if there isn't one.
      *
-     * @return
+     * @return  the current open path
      */
     public Path getOpenPath() {
         if (openPath == null) {
@@ -138,7 +138,7 @@ public class Slice {
     /**
      * Put all paths in this slice and their content in forward or reverse order
      *
-     * @param isReverse
+     * @param isReverse true if reverse, false if forward
      */
     public void setReverseOrder (boolean isReverse) {
         if (reverseOrder != isReverse) {
