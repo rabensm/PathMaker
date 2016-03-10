@@ -62,4 +62,19 @@ public class DesiredPath extends Path {
         }
         return slices.get(index);
     }
+
+    /**
+     * Generates the g-code to cut all the slices' paths, in order
+     *
+     * @return  String containing g-code
+     */
+    public String getGCode() {
+        StringBuilder gCodeStr = new StringBuilder();
+
+        for (Slice slice : slices) {
+            gCodeStr.append(slice.getGCode());
+        }
+
+        return gCodeStr.toString();
+    }
 }

@@ -91,7 +91,7 @@ public class Path {
 
         // append the x, y, z of each of the nodes
         for (Vector3d node : nodes) {
-            gCodeStr.append("X ").append(node.x).append("Y ").append(node.y).append("Z ").append(node.z).append("\n");
+            gCodeStr.append("X").append(node.x).append(" Y").append(node.y).append(" Z").append(node.z).append("\n");
         }
 
         // enter rapid move mode and go back to safe height

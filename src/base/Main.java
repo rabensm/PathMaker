@@ -31,5 +31,6 @@ public class Main {
         path1.addNode(200, 200, -7);
 
         path1.slicePath();
+        String gCode = path1.getGCode();
     }
 }

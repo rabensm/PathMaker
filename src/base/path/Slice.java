@@ -150,4 +150,18 @@ public class Slice {
         }
     }
 
+    /**
+     * Generates the g-code to cut all the paths in this slice, in order
+     *
+     * @return  String containing g-code for this slice
+     */
+    public String getGCode() {
+        StringBuilder gCodeStr = new StringBuilder();
+
+        for (Path path : paths) {
+            gCodeStr.append(path.getGCode());
+        }
+
+        return gCodeStr.toString();
+    }
 }
