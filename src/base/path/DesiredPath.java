@@ -40,6 +40,13 @@ public class DesiredPath extends Path {
                 ++sliceIndex;
             }
         }
+
+        // reverse every other slice for efficiency when cutting
+        for (int iSlice = 0; iSlice < slices.size(); ++iSlice) {
+            if ((iSlice & 1) == 1) {
+                slices.get(iSlice).setReverseOrder(true);
+            }
+        }
     }
 
     /**

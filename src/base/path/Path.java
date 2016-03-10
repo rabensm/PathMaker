@@ -3,6 +3,7 @@ package base.path;
 import base.Config;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.vecmath.Vector3d;
 
@@ -10,10 +11,15 @@ import javax.vecmath.Vector3d;
  * Represents a 3D path as a list of 3D nodes
  */
 public class Path {
+    // the 3D nodes that make this path
     protected List<Vector3d> nodes;
+
+    // is this path in reverse order?
+    private boolean reverseOrder;
 
     public Path () {
         nodes = new ArrayList<>();
+        reverseOrder = false;
     }
 
     /**
@@ -43,6 +49,18 @@ public class Path {
      */
     public int size() {
         return nodes.size();
+    }
+
+    /**
+     * Put this path in forward or reverse order
+     *
+     * @param isReverse
+     */
+    public void setReverseOrder (boolean isReverse) {
+        if (reverseOrder != isReverse) {
+            Collections.reverse(nodes);
+            reverseOrder = isReverse;
+        }
     }
 
     /**

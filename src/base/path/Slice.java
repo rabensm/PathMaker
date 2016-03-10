@@ -4,6 +4,7 @@ import base.Config;
 
 import javax.vecmath.Vector3d;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,11 +31,15 @@ public class Slice {
     // the current path being added to when slicing
     private Path openPath;
 
+    // are paths in this slice in reverse order?
+    private boolean reverseOrder;
+
     public Slice (int depthIndex) {
         top = depthIndex * -Config.PassDepth;
         bottom = (depthIndex + 1) * -Config.PassDepth;
         paths = new ArrayList<>();
         openPath = null;
+        reverseOrder = false;
     }
 
     /**
@@ -129,4 +134,20 @@ public class Slice {
         }
         openPath = null;
     }
+
+    /**
+     * Put all paths in this slice and their content in forward or reverse order
+     *
+     * @param isReverse
+     */
+    public void setReverseOrder (boolean isReverse) {
+        if (reverseOrder != isReverse) {
+            for (Path path : paths) {
+                path.setReverseOrder(isReverse);
+            }
+            Collections.reverse(paths);
+            reverseOrder = isReverse;
+        }
+    }
+
 }
