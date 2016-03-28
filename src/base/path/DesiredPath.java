@@ -1,5 +1,7 @@
 package base.path;
 
+import base.Config;
+
 import javax.vecmath.Vector3d;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +30,14 @@ public class DesiredPath extends Path {
         // iterate through our nodes, getting node pairs (our path segments) into n0 and n1
         // nodes 0 and 1, then 1 and 2, then 2 and 3, etc.
         for (int iNode = 0; iNode < nodes.size(); ++iNode) {
-            Vector3d n0 = nodes.get(iNode);
+            Vector3d n0 = new Vector3d(nodes.get(iNode));
             // on the last iteration, n0 will be last node and n1 will be null
-            Vector3d n1 = (iNode + 1 < nodes.size()) ? nodes.get(iNode + 1) : null;
+            Vector3d n1 = (iNode + 1 < nodes.size()) ? new Vector3d(nodes.get(iNode + 1)) : null;
+
+            // raise all slices up one pass depth to make them a little higher then final pass
+            n0.z += Config.PassDepth;
+            if (n1 != null)
+                n1.z += Config.PassDepth;
 
             int sliceIndex = 0;
 
@@ -41,7 +48,7 @@ public class DesiredPath extends Path {
             }
         }
 
-        // reverse every other slice for efficiency when cutting
+        // reverse every other slice so tool can start each slice near the end of the previous slice
         for (int iSlice = 0; iSlice < slices.size(); ++iSlice) {
             if ((iSlice & 1) == 1) {
                 slices.get(iSlice).setReverseOrder(true);
@@ -71,10 +78,13 @@ public class DesiredPath extends Path {
     public String getGCode() {
         StringBuilder gCodeStr = new StringBuilder();
 
+        // each of the progressively deeper pass slices, to rough in path
         for (Slice slice : slices) {
             gCodeStr.append(slice.getGCode());
         }
 
+        // final pass with original DesiredPath
+        gCodeStr.append(super.getGCode());
         return gCodeStr.toString();
     }
 }
