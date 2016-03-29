@@ -5,6 +5,10 @@ import base.path.DesiredPath;
 public class Main {
 
     public static void main(String[] args) {
+        PathGrid grid = new PathGrid();
+        grid.make();
+        String gCode = grid.getGCode();
+
         DesiredPath path1 = new DesiredPath();
 
         // hacked together test path
@@ -18,6 +22,6 @@ public class Main {
         path1.addNode(10, 80, -6);
 
         path1.slicePath();
-        String gCode = path1.getGCode();
+        gCode = path1.getGCode();
     }
 }
