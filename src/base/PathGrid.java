@@ -31,6 +31,7 @@ public class PathGrid {
     }
 
     private void makeStripe(Vector3d stripeOrigin) {
+        // start with deepest center cut, as a DesiredPath with pass slices
         DesiredPath centerPath = new DesiredPath();
         centerPath.addNode(stripeOrigin);
         Vector3d endNode = new Vector3d(stripeOrigin);
@@ -39,6 +40,7 @@ public class PathGrid {
         centerPath.slicePath();
         paths.add(centerPath);
 
+        // sweep up to the left and right to widen this stripe to desired radius
         sweepStripe(stripeOrigin, -1);
         sweepStripe(stripeOrigin, 1);
     }
